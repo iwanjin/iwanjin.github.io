@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>With Iwan 화면</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#F3F4F7;--surface:#fff;--fg:#16181D;--muted:#687080;--line:#E0E3EA;--accent:#2F6D8C;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#13161C;--surface:#1B1F27;--fg:#ECEEF2;--muted:#9AA2B0;--line:#2A2F3A;--accent:#86B9D3;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding-block:40px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:13px;letter-spacing:.1em;color:var(--accent);font-weight:500;margin:0 0 8px}
+h1{font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 8px;text-wrap:balance;word-break:keep-all}
+.lead{color:var(--muted);margin:0 0 10px;max-width:40em;word-break:keep-all}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:32px}
+figure{margin:0 0 40px}
+figure img{display:block;width:100%;height:auto;max-width:100%;border-radius:10px;border:1px solid var(--line);background:#fff}
+figcaption{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;margin-top:10px;word-break:keep-all}
+figcaption b{font-size:20px;font-weight:600}
+figcaption span{font-size:13px;color:var(--muted)}
+figure.phone img{max-width:390px;margin:0 auto}
+.end{margin-top:16px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.end a{color:var(--accent);text-decoration:none}
+</style></head><body><div class="wrap">
+<p class="eyebrow">WITH IWAN v2.4</p>
+<h1>참모와 함께하는 주식 · 코인 퀀트 스캐너</h1>
+<p class="lead">KOSDAQ 주식과 Upbit 코인을 함께 보는 듀얼 트랙 추천 시스템. 모든 추천은 종목명이 아니라 진입영역 · 손절 · 익절 · 매물대 근거를 담은 Strategy Card로 출력</p>
+<div class="meta"><span>Streamlit · Plotly · SQLite · 토스페이먼츠</span><span>Free / Pro / VIP 멤버십</span><span>룰 기반 참모 'iwan의 한 마디'</span><span>Claude Code 병렬 서브에이전트로 개발</span></div>
+<figure><img src="withiwan/v14_weather.jpg" alt="대시보드" width="1280" height="900" loading="lazy"><figcaption><b>대시보드</b><span>오늘의 시장 현황과 코인 피크타임, 실시간 시세</span></figcaption></figure>
+<figure><img src="withiwan/desktop.jpg" alt="메인 화면" width="1265" height="1690" loading="lazy"><figcaption><b>메인 화면</b><span>시장 현황 · With Iwan이 만든 차이 · 오늘의 추천 미리보기 · 멤버십</span></figcaption></figure>
+<figure><img src="withiwan/scanner_desktop.jpg" alt="스캐너" width="1280" height="900" loading="lazy"><figcaption><b>스캐너</b><span>주식 · 코인 8개 카테고리, Strategy Card 형태의 추천 출력</span></figcaption></figure>
+<figure><img src="withiwan/chart_board.jpg" alt="차트" width="1280" height="900" loading="lazy"><figcaption><b>차트</b><span>HTS 스타일 차트에 진입영역 · 손절 · 익절 · 매물대 오버레이</span></figcaption></figure>
+<figure><img src="withiwan/v9_live.jpg" alt="실시간 시세" width="1280" height="900" loading="lazy"><figcaption><b>실시간 시세</b><span>거래대금 · 급등 · 급락 상위 종목과 추천 미리보기</span></figcaption></figure>
+<figure><img src="withiwan/admin_desktop.jpg" alt="관리자" width="1280" height="900" loading="lazy"><figcaption><b>관리자</b><span>회원 · 프로모션 코드 · 광고 · 번역 관리 8탭</span></figcaption></figure>
+<figure class="phone"><img src="withiwan/mobile.jpg" alt="모바일" width="375" height="3921" loading="lazy"><figcaption><b>모바일</b><span>반응형 한 열 레이아웃</span></figcaption></figure>
+<div class="end"><span>© Danbi Works · With Iwan</span><a href="../index.html">포트폴리오로 돌아가기</a></div>
+</div></body></html>
