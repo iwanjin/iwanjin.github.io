@@ -272,8 +272,11 @@ const ITEMS = [
   {g:"ai", tag:"웹서비스",     art:"candle",  title:"With Iwan",                  sub:"주식 · 코인 퀀트 스캐너 · 라이브 데모",   h:200, href:"https://withiwan.streamlit.app/", img:"thumbs/withiwan.jpg"},
   {g:"ai", tag:"웹서비스",     art:"bars",    title:"유매기 · 유튜브 매출 분석기", sub:"채널 주소만 넣으면 월 매출 분석",      h:190, href:"https://tinyurl.com/danbiyt"},
   {g:"ai", tag:"플랫폼",       art:"clock",   title:"다시 DASI",                  sub:"배우기 전 90분 먼저 판단",           h:175, href:"https://dasi-demo.netlify.app/"},
-  {g:"ai", tag:"블로그",       art:"doc",     title:"머니폴리시랩",               sub:"정부지원금·경제 블로그 자동화",       h:210, href:"https://blog.naver.com/moneypolicylab"},
-  {g:"ai", tag:"블로그",       art:"doc",     title:"티비J의 방송연예 정리노트",  sub:"방송·연예 정보 블로그 자동화",        h:320, href:"https://blog.naver.com/tvjnote"},
+  {g:"ai", tag:"블로그",       art:"doc",     title:"티비J의 방송연예 정리노트",  sub:"방송 · 연예 · 예능",                 h:320, href:"https://blog.naver.com/tvjnote"},
+  {g:"ai", tag:"블로그",       art:"doc",     title:"머니폴리시랩",               sub:"경제 · 비즈니스",                    h:210, href:"https://blog.naver.com/moneypolicylab"},
+  {g:"ai", tag:"블로그",       art:"doc",     title:"진교수 블로그",              sub:"보험 · 통신 · 고정비 절약 팁",        h:262, href:"https://blog.naver.com/jinszzz88"},
+  {g:"ai", tag:"자동화 도구",  art:"link",    title:"서로이웃 자동화",            sub:"블로그 이웃 신청·재방문 관리 도구",   h:168, href:""},
+  {g:"ai", tag:"자동화 도구",  art:"monitor", title:"블로그 모니터링 자동화",      sub:"세 블로그 통계·발행 현황 자동 수집",     h:205, href:""},
   {g:"ai", tag:"커뮤니티",     art:"group",   title:"송파강동 AI창업 마케팅 스터디 SGS", sub:"당근 모임 운영 · 초대 링크",         h:95,  href:"https://daangn.com/kr/share/community/ref/invite-group/bcGHqMxUX92"},
 
   // 사업 이력
@@ -374,6 +377,16 @@ const ART = {
     <g fill="var(--ink)" opacity=".8"><circle cx="112" cy="128" r="26"/><path d="M62 220 C62 176, 162 176, 162 220" /></g>
     <g fill="var(--ink)" opacity=".8"><circle cx="288" cy="128" r="26"/><path d="M238 220 C238 176, 338 176, 338 220"/></g>
     <g class="mv slide" stroke="var(--ink)" stroke-width="4" opacity=".5"><path d="M150 250 h100"/></g></svg>`,
+  link: `<svg ${S}><g fill="var(--ink)"><circle cx="110" cy="150" r="40"/><circle cx="290" cy="150" r="40"/></g>
+    <g fill="var(--paper)"><circle cx="110" cy="138" r="12"/><path d="M84 182 c0 -18, 52 -18, 52 0z"/><circle cx="290" cy="138" r="12"/><path d="M264 182 c0 -18, 52 -18, 52 0z"/></g>
+    <path class="mv grow" d="M158 150 H242" stroke="var(--pop)" stroke-width="8"/>
+    <g class="mv pop1"><circle cx="200" cy="150" r="22" fill="var(--pop)"/><path d="M190 150 l7 7 l13 -14" stroke="var(--paper)" stroke-width="4" fill="none"/></g>
+    <g class="mv fade-in" opacity="0" fill="var(--pop)"><circle cx="60" cy="80" r="6"/><circle cx="340" cy="80" r="6"/><circle cx="70" cy="226" r="6"/><circle cx="330" cy="226" r="6"/></g></svg>`,
+  monitor: `<svg ${S}><rect x="56" y="54" width="288" height="176" rx="12" stroke="var(--ink)" stroke-width="4"/>
+    <g fill="var(--ink)" opacity=".25"><rect x="74" y="72" width="76" height="40" rx="6"/><rect x="162" y="72" width="76" height="40" rx="6"/><rect x="250" y="72" width="76" height="40" rx="6"/></g>
+    <path class="mv slide" d="M74 200 L110 176 L146 184 L182 150 L218 160 L254 128 L290 136 L326 108" stroke="var(--pop)" stroke-width="6" fill="none"/>
+    <circle class="mv pop1" cx="326" cy="108" r="10" fill="var(--pop)"/>
+    <path d="M160 256 H240 M200 230 V256" stroke="var(--ink)" stroke-width="4"/></svg>`,
   growth: `<svg ${S}><line x1="60" y1="240" x2="340" y2="240" stroke="var(--ink)" stroke-width="2" opacity=".4"/>
     <path class="mv slide" d="M70 214 L130 186 L180 200 L240 140 L300 112 L340 84" stroke="var(--ink)" stroke-width="6"/>
     <circle class="mv pop1" cx="340" cy="84" r="16" fill="var(--pop)"/>
