@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>블로그 모니터링 자동화</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* 서체 1종, 글자 크기 4단계(36/20/15/13). 큰 글씨는 쉬운 제목, 작은 글씨는 전문 명칭 */
+:root{--bg:#F3F4F7;--surface:#fff;--fg:#16181D;--muted:#687080;--line:#E0E3EA;--accent:#2F6D8C;--soft:#E6EFF4;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#13161C;--surface:#1B1F27;--fg:#ECEEF2;--muted:#9AA2B0;--line:#2A2F3A;--accent:#86B9D3;--soft:#1F2C35;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
+.wrap{max-width:1040px;margin:0 auto;padding-block:40px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.pro{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em;margin:0}
+.eyebrow{font-size:13px;letter-spacing:.1em;color:var(--accent);font-weight:500;margin:0 0 8px}
+h1{font-size:36px;font-weight:600;letter-spacing:-.02em;line-height:1.2;margin:0 0 10px;text-wrap:balance}
+h2{font-size:20px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em;text-wrap:balance}
+h3{font-size:15px;font-weight:600;margin:0 0 2px}
+p{margin:0}
+section{margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+.sec-head{margin-bottom:18px}
+
+/* 도식: 수집 → 저장 → 활용 */
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:10px}
+.col>.cap{font-size:13px;font-weight:500;color:var(--accent);letter-spacing:.08em}
+.node{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;flex:1}
+.node.core{background:var(--soft);border-color:var(--accent);display:flex;flex-direction:column;justify-content:center}
+.arrow{align-self:center;color:var(--accent);font-size:20px;font-weight:600;padding-top:24px}
+@media (max-width:760px){
+  .flow{grid-template-columns:1fr}
+  .arrow{padding:0;justify-self:center;transform:rotate(90deg)}
+}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card ul{margin:10px 0 0;padding-left:18px}
+.card li{margin:2px 0}
+.card .pro{margin-top:2px}
+
+.time{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:0}
+.time dt{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent)}
+.time dd{margin:0}
+.time dd small{display:block;font-size:13px;color:var(--muted)}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.badge{display:inline-block;font-size:13px;font-weight:500;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-bottom:8px}
+.badge.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.stack span{font-size:13px;padding:4px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
+.end{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.end a{color:var(--accent);text-decoration:none}
+</style></head><body><div class="wrap">
+
+<p class="eyebrow">AUTOMATION · DANBI WORKS</p>
+<h1>세 블로그 현황을 매일 자동으로 모으는 도구</h1>
+<p class="pro">네이버 블로그 읽기 전용 모니터링 파이프라인 · Cloudflare Workers + D1 + PC 수집기</p>
+
+<section>
+  <div class="sec-head">
+    <h2>모으고, 쌓고, 꺼내 쓰는 구조</h2>
+    <p class="pro">수집(Ingest) → 저장(Storage) → 활용(Serving) 아키텍처</p>
+  </div>
+  <div class="flow">
+    <div class="col">
+      <span class="cap">수집</span>
+      <div class="node"><h3>새 글 목록</h3><p class="pro">공개 RSS · 클라우드에서 매시 수집</p></div>
+      <div class="node"><h3>조회수 · 검색어 · 예약 글 · 광고 수익</h3><p class="pro">PC 수집기 · 하루 3회 · 읽기 전용</p></div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="col">
+      <span class="cap">저장</span>
+      <div class="node core"><h3>클라우드 기록장</h3><p class="pro">Cloudflare D1 데이터베이스 · 일별 백업(R2)</p><p class="pro">PC가 꺼지거나 고장 나도 기록 보존</p></div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="col">
+      <span class="cap">활용</span>
+      <div class="node"><h3>현황판</h3><p class="pro">모바일 우선 대시보드</p></div>
+      <div class="node"><h3>AI가 읽는 한 장 요약</h3><p class="pro">/brief 브리핑 API → 다음 글 주제 결정</p></div>
+      <div class="node"><h3>저녁 알림</h3><p class="pro">디렉션 메모 · 메신저 발송</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>하는 일 6가지</h2>
+    <p class="pro">기능 명세</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>새 글 자동 기록</h3><p class="pro">RSS 수집 · Workers Cron</p>
+      <ul><li>발행 글 제목과 시각을 매시 기록</li><li>벤치마크 블로그의 새 글 제목도 함께 축적</li></ul></div>
+    <div class="card"><h3>조회수와 검색어 정리</h3><p class="pro">통계 · 유입경로 수집</p>
+      <ul><li>일별 조회수, 방문자, 글별 조회수</li><li>유입 검색어 상위와 신규 진입 키워드</li><li>검색 · 홈판 · 이웃 유입 비중</li></ul></div>
+    <div class="card"><h3>빈 예약 칸 찾기</h3><p class="pro">예약 발행 슬롯 매트릭스</p>
+      <ul><li>블로그별 하루 4개 발행 시간대 관리</li><li>내일 비어 있는 시간대 표시</li></ul></div>
+    <div class="card"><h3>반응 좋은 글 포착</h3><p class="pro">홈판 진입 · 급등 · 하락 판정</p>
+      <ul><li>홈판 노출 글 자동 판정</li><li>평균 3배 이상 급등 글은 후속편 신호</li><li>검색 유입 급감은 조기 경보</li></ul></div>
+    <div class="card"><h3>광고 수익 기록</h3><p class="pro">애드포스트 일별 수익 축적</p>
+      <ul><li>일별 수익과 월 누계</li><li>블로그별 수익 비중</li></ul></div>
+    <div class="card"><h3>AI가 읽는 한 장 요약</h3><p class="pro">브리핑 API · 원격 MCP 예정</p>
+      <ul><li>위 내용을 요청 한 번에 읽는 압축 문서</li><li>매일 새벽 글 제작 전에 반영</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>하루 동안의 움직임</h2>
+    <p class="pro">실행 스케줄 (KST)</p>
+  </div>
+  <dl class="time">
+    <dt>매시 17분</dt><dd>새 글 목록 수집<small>클라우드에서 실행, PC 불필요</small></dd>
+    <dt>09 · 14 · 21시</dt><dd>조회수 · 검색어 · 예약 글 · 광고 수익 수집<small>PC 수집기, 관리 화면을 열어 읽기만 수행</small></dd>
+    <dt>21:30</dt><dd>저녁 알림 발송<small>홈판 진입, 급등 글, 신규 키워드, 내일 빈 시간대</small></dd>
+    <dt>새벽</dt><dd>요약을 읽고 세 블로그 글 자동 제작<small>주제와 순서를 현황에 맞춰 조정</small></dd>
+    <dt>일요일</dt><dd>주간 점검<small>지표 확인, 기준값 조정</small></dd>
+  </dl>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>계정을 지키는 원칙</h2>
+    <p class="pro">안전 설계 (Safety by design)</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>읽기만 하는 도구</h3><p class="pro">Read-only · 쓰기 코드 없음</p><ul><li>글 발행, 댓글, 이웃 신청 기능 없음</li></ul></div>
+    <div class="card"><h3>로그인은 사람이 직접</h3><p class="pro">로그인 자동화 금지 · 비밀번호 미보관</p><ul><li>전용 브라우저에서 한 번 로그인</li></ul></div>
+    <div class="card"><h3>이상하면 바로 멈춤</h3><p class="pro">서킷 브레이커 · 재시도 없음</p><ul><li>이상 신호 감지 시 24시간 정지</li></ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head">
+    <h2>진행 단계</h2>
+    <p class="pro">로드맵</p>
+  </div>
+  <div class="steps">
+    <div class="step"><span class="badge on">완료</span><h3>1단계 · 클라우드 기반</h3><p class="pro">저장소, 새 글 수집, 현황판, 요약 API</p></div>
+    <div class="step"><span class="badge on">진행 중</span><h3>2단계 · PC 수집기</h3><p class="pro">통계 · 예약 · 광고 수익, 블로그별 순차 적용</p></div>
+    <div class="step"><span class="badge">예정</span><h3>3단계 · 알림 · 백업 · MCP</h3><p class="pro">저녁 알림, 일별 백업, AI 직접 연결</p></div>
+  </div>
+  <div class="stack"><span>Cloudflare Workers</span><span>Hono</span><span>D1</span><span>R2</span><span>Python 3.12</span><span>Playwright</span><span>Claude Code</span></div>
+</section>
+
+<div class="end"><span>© Danbi Works · 블로그 모니터링 자동화</span><a href="../index.html">포트폴리오로 돌아가기</a></div>
+</div></body></html>
